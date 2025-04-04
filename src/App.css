@@ -1,7 +1,6 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
@@ -33,10 +32,146 @@
   }
 }
 
-.card {
-  padding: 2em;
+.login-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  gap: 200px;
+  align-items: center;
+  overflow: hidden;
+  background: linear-gradient(151.08deg, #FFFFFF 20.71%, #183BA3 66.01%),
+              url("") no-repeat center center/cover;
+  background-blend-mode: lighten;
+  padding: 10px;
 }
 
-.read-the-docs {
-  color: #888;
+.left-section {
+  color: white;
+  max-width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align to left */
+  padding: 40px 20px;
+  text-align: left;
+  gap:200px;
+}
+
+.left-section img {
+  max-width: 200px;
+  margin-bottom: 20px;
+  align-self: flex-start; /* Ensure logo stays at the left */
+}
+
+.left-section h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.left-section span {
+  color: #ffcb00;
+  font-weight: bold;
+}
+
+/* .left-section img {
+  max-width: 200px;
+  margin-bottom: 20px;
+} */
+
+.right-section {
+  backdrop-filter: blur(10px);
+  padding: 30px;
+  border-radius: 12px;
+  width: 380px;
+  text-align: center;
+  color: white;
+}
+
+.styled-input {
+  margin-bottom: 15px;
+  height: 45px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  color: black;
+}
+
+.styled-input::placeholder {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.styled-button {
+  width: 100%;
+  height: 45px;
+  background: white;
+  color: black;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.styled-button:hover {
+  background: #24389d;
+  color: white;
+}
+
+.ball {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  filter: blur(5px);
+}
+
+.top-right {
+  width: 120px;
+  height: 120px;
+  top: 10px;
+  right: 50px;
+}
+
+.bottom-left {
+  width: 180px;
+  height: 180px;
+  bottom: 40px;
+  left: 30px;
+}
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 0px;
+  }
+
+  .left-section {
+    max-width: 100%;
+    height: auto;
+    padding: 20px;
+    align-items: center; /* Center align for smaller screens */
+    text-align: center; /* Center text for smaller screens */
+  } 
+  .left-section{
+     /* height: 0px; */
+
+  }
+
+
+  .right-section {
+    width: 100%;
+    max-width: 90%;
+    padding: 20px;
+  }
+  .left-section img {
+    max-width: 200px;
+    margin-bottom: 20px;
+    align-self: flex-start; /* Ensure logo stays at the left */
+  }
+  .title{
+    display: none;
+  }
 }
