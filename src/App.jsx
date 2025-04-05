@@ -45,7 +45,7 @@ const App = () => {
         message.success("Login successful!");
         const token = response.data.token;
         localStorage.setItem("token", token);
-        // navigate("/dashboard");
+        navigate("/tasks");
       }
     } catch (error) {
       message.error(error.response?.data?.error || "Login failed");
