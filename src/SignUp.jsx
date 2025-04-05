@@ -91,7 +91,7 @@ const SignUp = () => {
       {/* Left Section */}
       <div className="left-section">
         <img src={backgroundImage} alt="Lemonpay Logo" className=".mobile-logo" />
-        <h1 className="title">
+        <h1 className="title1">
           <span style={{ color: 'white' }}>Join 8 Million Businesses</span> <br />
           <span>Powering Growth with</span> <br />
           <span style={{ color: 'white' }}>Lemonpay!</span>
