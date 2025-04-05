@@ -1,177 +1,64 @@
-// import React from "react";
-// import { Input, Button, Checkbox } from "antd";
-// import styled from "styled-components";
-// import backgroundImage from "./assets/Lemonpay 4.png"; // Update path if needed
-
-// // const LoginContainer = styled.div`
-// //   position: relative;
-// //    width: 100%;   /* Full width */
-// //   height: 100vh; /* Full height */
-// //   display: flex;
-// //   justify-content: space-between;
-// //   align-items: center;
-// //   padding: 0 8%;
-// //   overflow: hidden;
-// //   background: linear-gradient(151.08deg, #FFFFFF 20.71%, #183BA3 66.01%),
-// //               url(${''}) no-repeat center center/cover;
-// //   background-blend-mode: lighten;
-// // `;
-
-// const LoginContainer = styled.div`
-//   position: relative;
-//    width: 100%;   /* Full width */
-//   height: 100vh; /* Full height */
-//   display: flex;
-//   gap: 200px;
-//   align-items: center;
-//   overflow: hidden;
-//   background: linear-gradient(151.08deg, #FFFFFF 20.71%, #183BA3 66.01%),
-//               url(${''}) no-repeat center center/cover;
-//   background-blend-mode: lighten;
-// `;
-// const LeftSection = styled.div`
-//   color: white;
-//   max-width: 40%;
-//   height: 100%;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center; /* Vertically center */
-//   align-items: center;     /* Horizontally center */
-
-//   h1 {
-//     font-size: 2.5rem;
-//     font-weight: bold;
-//     margin-bottom: 10px;
-//     text-align: center;
-//   }
-
-//   span {
-//     color: #ffcb00;
-//     font-weight: bold;
-//   }
-
-//   img {
-//     max-width: 200px;
-//     margin-bottom: 20px;
-//   }
-// `;
-
-
-// const RightSection = styled.div`
-//   backdrop-filter: blur(10px);
-//   padding: 30px;
-//   border-radius: 12px;
-//   width: 380px;
-//   text-align: center;
-//   color: white;
-// `;
-
-// const StyledInput = styled(Input)`
-//   margin-bottom: 15px;
-//   height: 45px;
-//   border-radius: 5px;
-//   background: rgba(255, 255, 255, 0.3);
-//   border: none;
-//   color: white;
-
-//   &::placeholder {
-//     color: rgba(255, 255, 255, 0.8);
-//   }
-// `;
-
-// const StyledButton = styled(Button)`
-//   width: 100%;
-//   height: 45px;
-//   background:white;
-//   color: black;
-//   font-size: 16px;
-//   border: none;
-//   border-radius: 5px;
-
-//   &:hover {
-//     background: #24389d;
-//   }
-// `;
-
-// const Ball = styled.div`
-//   position: absolute;
-//   background: rgba(255, 255, 255, 0.2);
-//   border-radius: 50%;
-//   filter: blur(5px);
-
-//   &.top-right {
-//     width: 120px;
-//     height: 120px;
-//     top: 10px;
-//     right: 50px;
-//   }
-
-//   &.bottom-left {
-//     width: 180px;
-//     height: 180px;
-//     bottom: 40px;
-//     left: 30px;
-//   }
-// `;
-
-// const App = () => {
-//   return (
-//     <LoginContainer>
-//       {/* Decorative Balls */}
-//       <Ball className="top-right" />
-//       <Ball className="bottom-left" />
-
-//       {/* Left Side */}
-//       <LeftSection>
-//       <img src={backgroundImage} alt="Lemonpay Logo" />
-//         <h1>
-//           Join 8 Million Businesses <br />
-//           <span>Powering Growth with Lemonpay!</span>
-//         </h1>
-//       </LeftSection>
-
-//       {/* Right Side (Form Section) */}
-//       <RightSection>
-//         <h2>Welcome Login System</h2>
-//         <p>Your gateway to seamless transactions and easy payments.</p>
-
-//         <StyledInput placeholder="Email" type="email" />
-//         <StyledInput placeholder="Password" type="password" />
-
-//         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "15px", color: "#fff" }}>
-//           <Checkbox style={{ color: "white" }}>Remember me</Checkbox>
-//           <a href="#" style={{ color: "#ffcb00", textDecoration: "none" }}>Sign Up</a>
-//         </div>
-
-//         <StyledButton type="primary">Sign In</StyledButton>
-//       </RightSection>
-//     </LoginContainer>
-//   );
-// };
-
-// export default App;
-import React from "react";
-import { Input, Button, Checkbox } from "antd";
+import React, { useState } from "react";
+import { Input, Button, Checkbox, message } from "antd";
+import axios from "axios";
 import "./App.css";
 import backgroundImage from "./assets/Lemonpay 4.png";
 import { useNavigate } from "react-router-dom";
 
 const App = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
 
-  const handleSignIn = () => {
-    navigate("/signup"); // navigate to signup page on button click
+  const validateField = (name, value) => {
+    let error = "";
+
+    if (name === "email") {
+      if (!value) error = "Email is required.";
+      else if (!/\S+@\S+\.\S+/.test(value)) error = "Invalid email format.";
+    }
+
+    if (name === "password") {
+      if (!value) error = "Password is required.";
+      else if (value.length < 8) error = "Must be at least 8 characters.";
+    }
+
+    setErrors((prev) => ({ ...prev, [name]: error }));
+  };
+
+  const handleLogin = async () => {
+    validateField("email", email);
+    validateField("password", password);
+
+    if (errors.email || errors.password || !email || !password) {
+      message.error("Please fix the errors before submitting.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/login",
+        { email, password }
+      );
+      if (response.status === 200) {
+        message.success("Login successful!");
+        const token = response.data.token;
+        localStorage.setItem("token", token);
+        // navigate("/dashboard");
+      }
+    } catch (error) {
+      message.error(error.response?.data?.error || "Login failed");
+    }
   };
 
   return (
     <div className="login-container">
-      {/* Decorative Balls */}
       <div className="ball top-right" />
       <div className="ball bottom-left" />
 
-      {/* Left Section */}
       <div className="left-section">
-        <img src={backgroundImage} alt="Lemonpay Logo" className=".mobile-logo" />
+        <img src={backgroundImage} alt="Lemonpay Logo" className="mobile-logo" />
         <h1 className="title">
           <span style={{ color: 'white' }}>Join 8 Million Businesses</span> <br />
           <span>Powering Growth with</span> <br />
@@ -179,20 +66,55 @@ const App = () => {
         </h1>
       </div>
 
-      {/* Right Section */}
       <div className="right-section">
         <h2>Welcome Login System</h2>
         <p>Your gateway to seamless transactions and easy payments.</p>
 
-        <Input className="styled-input" placeholder="Email" type="email" />
-        <Input className="styled-input" placeholder="Password" type="password" />
+        <Input
+          className="styled-input"
+          placeholder="Email"
+          type="email"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            validateField("email", e.target.value);
+          }}
+        />
+        {errors.email && (
+          <div className="error-wrapper">
+            <div className="error-message">{errors.email}</div>
+          </div>
+        )}
+        <Input
+          className="styled-input"
+          placeholder="Password"
+          type="password"
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            validateField("password", e.target.value);
+          }}
+        />
+        {errors.password && (
+          <div className="error-wrapper">
+            <div className="error-message">{errors.password}</div>
+          </div>
+        )}
 
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "15px", color: "#fff" }}>
           <Checkbox style={{ color: "white" }}>Remember me</Checkbox>
-          <a href="#" style={{ color: "#ffcb00", textDecoration: "none" }} onClick={handleSignIn}>Sign Up</a>
+          <a
+            href="#"
+            style={{ color: "#ffcb00", textDecoration: "none" }}
+            onClick={() => navigate("/signup")}
+          >
+            Sign Up
+          </a>
         </div>
 
-        <Button className="styled-button" type="primary">Sign In</Button>
+        <Button className="styled-button" type="primary" onClick={handleLogin}>
+          Sign In
+        </Button>
       </div>
     </div>
   );
