@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Input, Button, Checkbox, message } from "antd";
 import axios from "axios";
 import "./App.css";
-import backgroundImage from "./assets/Lemonpay 4.png";
 import { useNavigate } from "react-router-dom";
 
 const App = () => {
@@ -58,7 +57,7 @@ const App = () => {
       <div className="ball bottom-left" />
 
       <div className="left-section">
-        <img src={backgroundImage} alt="Lemonpay Logo" className="mobile-logo" />
+        <img src={'https://media-hosting.imagekit.io/2652a3bf9870422b/lemonpay%204.png?Expires=1838455555&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=s3t-kvxKfipjP2KVOZ2Ch1eV6vnffcc4xhVmkXFRV6F3vYHulzBII5PHotdy5vze8653Q1llrpgCHwx0NRs3vWwmKpvZclfAAuh6gFJkuJ~NEBym0xcQbAan-IrEb8MKUDxFs6OUGrWEsSEysApi9aIzmORmlHLYYjIb6L8qBp602dJLG05weHRIQCGTxBLrQh3z20PNa9oicoVG3v4MsZIyVSKyxzYVzthHXNCoTJzGx0~itM8FPpayztsLMNbnLBxe4ji5I2s9LhhoDqTlERTopmOjE2iM8DoSfa2lzR0~M5~b7RHeStwq6XQr~MFw4arJASEAHXN6XX-RYwJ9Ug__'} alt="Lemonpay Logo" className="mobile-logo" />
         <h1 className="title1">
           <span style={{ color: 'white' }}>Join 8 Million Businesses</span> <br />
           <span>Powering Growth with</span> <br />
