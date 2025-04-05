@@ -15,7 +15,7 @@ const AddTask = () => {
     const handleSubmit = async () => {
         setErrors([]); // reset
         try {
-            const response = await axios.post("http://localhost:3000/api/tasks/create", {
+            const response = await axios.post("https://lemonpay-backend.onrender.com/api/tasks/create", {
                 taskName: taskName,
                 description,
                 dueDate: date,

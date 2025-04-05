@@ -26,7 +26,7 @@ const CustomTable = () => {
 
     const fetchTasks = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/tasks/getTasks", {
+        const response = await axios.get("https://lemonpay-backend.onrender.com/api/tasks/getTasks", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -44,7 +44,7 @@ const CustomTable = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await axios.delete(`http://localhost:3000/api/tasks/deleteTask/${id}`, {
+      const response = await axios.delete(`https://lemonpay-backend.onrender.com/api/tasks/deleteTask/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -60,7 +60,7 @@ const SignUp = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post("http://localhost:3000/api/auth/register", {
+      const response = await axios.post("https://lemonpay-backend.onrender.com/api/auth/register", {
         email: formData.email,
         password: formData.password,
       });

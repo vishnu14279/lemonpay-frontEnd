@@ -19,7 +19,7 @@ const UpdateTask = () => {
             const fetchTask = async () => {
                 try {
                     const token = localStorage.getItem("token");
-                    const response = await axios.get(`http://localhost:3000/api/tasks/getTask/${id}`, {
+                    const response = await axios.get(`https://lemonpay-backend.onrender.com/api/tasks/getTask/${id}`, {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
@@ -43,7 +43,7 @@ const UpdateTask = () => {
         setErrors([]);
         try {
 
-            await axios.put(`http://localhost:3000/api/tasks/updateTask/${id}`, {
+            await axios.put(`https://lemonpay-backend.onrender.com/api/tasks/updateTask/${id}`, {
                 taskName,
                 description,
                 dueDate: date,

@@ -38,7 +38,7 @@ const App = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/login",
+        "https://lemonpay-backend.onrender.com/api/auth/login",
         { email, password }
       );
       if (response.status === 200) {
