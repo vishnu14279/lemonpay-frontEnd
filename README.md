@@ -44,6 +44,14 @@ The app will typically be accessible at:
 ```
 http://localhost:5173
 ```
+### 4. To Sign Out from application (Frontend)
+---
+
+###
+
+1. **Clear the JWT token from `localStorage`**
+2. **Reload the page gives you not found message**
+3. **Redirect to the login (sign-in) page using (/) route**
 
 ---
 
