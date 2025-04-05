@@ -85,15 +85,15 @@ const App = () => {
             <div className="error-message">{errors.email}</div>
           </div>
         )}
-        <Input
+        <Input.Password
           className="styled-input"
           placeholder="Password"
-          type="password"
           value={password}
           onChange={(e) => {
             setPassword(e.target.value);
             validateField("password", e.target.value);
           }}
+          visibilityToggle
         />
         {errors.password && (
           <div className="error-wrapper">
