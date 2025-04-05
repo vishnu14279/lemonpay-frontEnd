@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Input, Button, Checkbox, message } from "antd";
 import axios from "axios";
 import "./App.css";
@@ -50,6 +50,10 @@ const App = () => {
       message.error(error.response?.data?.error || "Login failed");
     }
   };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) navigate("/");
+  }, [navigate]);
 
   return (
     <div className="login-container">

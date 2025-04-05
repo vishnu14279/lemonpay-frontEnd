@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { Input, Button, DatePicker, Form, message } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -33,7 +33,11 @@ const AddTask = () => {
             }
         }
     };
-
+     useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) navigate("/");
+      }, [navigate]);
+    
     return (
         <div className="add-task-container">
             <h2 className="title">Add Task</h2>

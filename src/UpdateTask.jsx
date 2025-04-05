@@ -13,31 +13,6 @@ const UpdateTask = () => {
 
     const navigate = useNavigate();
     const { id } = useParams();
-
-    useEffect(() => {
-        if (id) {
-            const fetchTask = async () => {
-                try {
-                    const token = localStorage.getItem("token");
-                    const response = await axios.get(`https://lemonpay-backend.onrender.com/api/tasks/getTask/${id}`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    });
-
-                    const { taskName, description, dueDate } = response.data;
-                    setTaskName(taskName);
-                    setDescription(description);
-                    setDate(dayjs(dueDate));
-                } catch (err) {
-                    message.error(err, "Failed to load task data");
-                }
-            };
-
-            fetchTask();
-        }
-    }, [id]);
-
     const handleSubmit = async () => {
         const token = localStorage.getItem("token");
         setErrors([]);
@@ -65,6 +40,35 @@ const UpdateTask = () => {
             }
         }
     };
+    useEffect(() => {
+        if (id) {
+            const fetchTask = async () => {
+                try {
+                    const token = localStorage.getItem("token");
+                    const response = await axios.get(`https://lemonpay-backend.onrender.com/api/tasks/getTask/${id}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+
+                    const { taskName, description, dueDate } = response.data;
+                    setTaskName(taskName);
+                    setDescription(description);
+                    setDate(dayjs(dueDate));
+                } catch (err) {
+                    message.error(err, "Failed to load task data");
+                }
+            };
+
+            fetchTask();
+        }
+    }, [id]);
+
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) navigate("/");
+    }, [navigate]);
 
     return (
         <div className="add-task-container">
