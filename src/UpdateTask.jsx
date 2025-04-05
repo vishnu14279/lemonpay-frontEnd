@@ -40,8 +40,7 @@ const UpdateTask = () => {
 
     const handleSubmit = async () => {
         const token = localStorage.getItem("token");
-        setErrors([]); // reset
-
+        setErrors([]);
         try {
 
             await axios.put(`http://localhost:3000/api/tasks/updateTask/${id}`, {
@@ -60,7 +59,7 @@ const UpdateTask = () => {
             navigate("/tasks");
         } catch (error) {
             if (error.response && error.response.status === 400) {
-                setErrors(error.response.data.errors); // set validation errors
+                setErrors(error.response.data.errors);
             } else {
                 console.error("Something went wrong", error);
             }

@@ -84,11 +84,9 @@ const SignUp = () => {
 
   return (
     <div className="login-container">
-      {/* Decorative Balls */}
       <div className="ball top-right" />
       <div className="ball bottom-left" />
 
-      {/* Left Section */}
       <div className="left-section">
         <img src={backgroundImage} alt="Lemonpay Logo" className=".mobile-logo" />
         <h1 className="title1">
@@ -98,7 +96,6 @@ const SignUp = () => {
         </h1>
       </div>
 
-      {/* Right Section */}
       <div className="right-section">
         <h2>Welcome Login System</h2>
         <p>Your gateway to seamless transactions and easy payments.</p>

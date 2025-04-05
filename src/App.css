@@ -9,9 +9,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -20,6 +22,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -40,7 +43,7 @@
   align-items: center;
   overflow: hidden;
   background: linear-gradient(151.08deg, #FFFFFF 20.71%, #183BA3 66.01%),
-              url("") no-repeat center center/cover;
+    url("") no-repeat center center/cover;
   background-blend-mode: lighten;
   padding: 10px;
 }
@@ -51,16 +54,16 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Align to left */
+  align-items: flex-start;
   padding: 40px 20px;
   text-align: left;
-  gap:200px;
+  gap: 200px;
 }
 
 .left-section img {
   max-width: 200px;
   margin-bottom: 20px;
-  align-self: flex-start; /* Ensure logo stays at the left */
+  align-self: flex-start;
 }
 
 .left-section h1 {
@@ -75,10 +78,7 @@
   font-weight: bold;
 }
 
-/* .left-section img {
-  max-width: 200px;
-  margin-bottom: 20px;
-} */
+
 
 .right-section {
   backdrop-filter: blur(10px);
@@ -138,13 +138,15 @@
   bottom: 40px;
   left: 30px;
 }
+
 .error-message {
   color: #ff4d4f;
   font-size: 14px;
 }
+
 .error-wrapper {
   display: flex;
-  justify-content: flex-start; /* Use 'flex-end' if you want it on the right */
+  justify-content: flex-start;
   margin-bottom: 10px;
   padding-left: 5px;
 }
@@ -164,11 +166,12 @@
     max-width: 100%;
     height: auto;
     padding: 20px;
-    align-items: center; /* Center align for smaller screens */
-    text-align: center; /* Center text for smaller screens */
-  } 
-  .left-section{
-     /* height: 0px; */
+    align-items: center;
+    text-align: center;
+  }
+
+  .left-section {
+    /* height: 0px; */
 
   }
 
@@ -178,32 +181,36 @@
     max-width: 90%;
     padding: 20px;
   }
+
   .left-section img {
     max-width: 200px;
     margin-bottom: 20px;
-    align-self: flex-start; /* Ensure logo stays at the left */
+    align-self: flex-start;
   }
-  .title1{
+
+  .title1 {
     display: none;
   }
 }
+
 .cancel-button {
   all: unset;
   color: black;
   cursor: pointer;
-  border:none;
+  border: none;
 }
 
 .cancel-button:hover,
 .cancel-button:focus,
-.cancel-button:active  {
+.cancel-button:active {
   background: none !important;
   color: black !important;
   border: none !important;
   outline: none !important;
 }
-.button-group{
+
+.button-group {
   display: flex;
-    flex-direction: column;
-    gap: 20px;
+  flex-direction: column;
+  gap: 20px;
 }
