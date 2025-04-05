@@ -1,38 +1,28 @@
 import React, { useEffect, useState } from "react";
+import { Table, Button, Dropdown, Menu } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import "./TaskTable.css";
-import { deleteTask } from "./Redux/slices/taskSlice";
-import { useNavigate } from "react-router-dom";
 import { setTasks } from "./Redux/slices/taskSlice";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { EllipsisOutlined } from "@ant-design/icons";
+import "./TaskTable.css";
+import dayjs from "dayjs";
 
 const CustomTable = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const tasks = useSelector((state) => state.tasks.tasks);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 3;
-  const dispatch = useDispatch();
-  // Get tasks from Redux store
-  const tasks = useSelector((state) => state.tasks.tasks);
-  const navigate = useNavigate();
 
-  const paginatedTasks = tasks.slice((currentPage - 1) * pageSize, currentPage * pageSize);
-  const totalPages = Math.ceil(tasks.length / pageSize);
-  const [openDropdownId, setOpenDropdownId] = useState(null);
-  const handleDelete = (id) => {
-    dispatch(deleteTask(id));
-    setOpenDropdownId(null);
-  };
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/"); // Redirect to signup if token is missing
-    }
+    if (!token) navigate("/");
   }, [navigate]);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/"); // Redirect if token missing
-      return;
-    }
+    if (!token) return;
 
     const fetchTasks = async () => {
       try {
@@ -41,92 +31,95 @@ const CustomTable = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        dispatch(setTasks(response.data)); // ✅ Dispatch tasks to Redux
+        dispatch(setTasks(response.data));
       } catch (error) {
         console.error("Error fetching tasks:", error);
       }
     };
 
     fetchTasks();
-  }, [dispatch, navigate]);
+  }, [dispatch]);
+
+  const handleDelete = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.delete(`http://localhost:3000/api/tasks/deleteTask/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        dispatch(setTasks(tasks.filter((task) => task._id !== id)));
+      }
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    }
+  };
+
+  const columns = [
+    {
+      title: "No",
+      dataIndex: "index",
+      render: (text, record, index) => (currentPage - 1) * pageSize + index + 1,
+    },
+    {
+      title: "Date & Time",
+      dataIndex: "dueDate",
+      style: { backgroundColor: "#FFF" },
+      render: (text) => dayjs(text).format("YYYY-MM-DD HH:mm"),
+
+    },
+    {
+      title: "Task",
+      dataIndex: "taskName",
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Dropdown
+          trigger={["click"]}
+          overlay={
+            <Menu>
+              <Menu.Item onClick={() => navigate(`/updatetask/${record._id}`)}>
+                Edit
+              </Menu.Item>
+              <Menu.Item onClick={() => handleDelete(record._id)}>
+                Delete
+              </Menu.Item>
+            </Menu>
+          }
+        >
+          <Button icon={<EllipsisOutlined />} />
+        </Dropdown>
+      ),
+    },
+  ];
+
   return (
     <div className="full-screen">
       <div className="header-section">
         <h2 className="title">Tasks Management</h2>
         <button className="add-task-button" onClick={() => navigate("/addtask")}>+ Add Task</button>
+
       </div>
 
-      <table className="custom-table">
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>Date & Time</th>
-            <th>Task</th>
-            <th>Description</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {paginatedTasks.map((task, index) => (
-            <tr key={task.id}>
-              <td className="rows">{index + 1 + (currentPage - 1) * pageSize}</td>
-              <td className="rows">{task.dueDate}</td>
-              <td className="rows">{task.taskName}</td>
-              <td className="rows">{task.description}</td>
-              <td className="action-cell">
-                <button
-                  className="action-button"
-                  onClick={() => setOpenDropdownId(openDropdownId === task.id ? null : task.id)}
-                >
-                  ⋮
-                </button>
-
-                {openDropdownId === task.id && (
-                  <div className="dropdown-card">
-                    <div className="dropdown-item">Edit</div>
-                    <div className="dropdown-item" onClick={() => handleDelete(task.id)}>
-                      Delete
-                    </div>
-                  </div>
-                )}
-              </td>
-
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* Pagination */}
-      <div className="pagination-container">
-        <button
-          className="pagination-arrow"
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage(currentPage - 1)}
-        >
-          &#8249;
-        </button>
-
-        <div className="pagination-pages">
-          {Array.from({ length: totalPages }, (_, i) => (
-            <button
-              key={i}
-              className={`pagination-number ${currentPage === i + 1 ? "active-page" : ""}`}
-              onClick={() => setCurrentPage(i + 1)}
-            >
-              {i + 1}
-            </button>
-          ))}
-        </div>
-
-        <button
-          className="pagination-arrow"
-          disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage(currentPage + 1)}
-        >
-          &#8250;
-        </button>
-      </div>
-
+      <Table
+        columns={columns}
+        dataSource={tasks}
+        rowKey="id"
+        pagination={{
+          pageSize,
+          current: currentPage,
+          onChange: (page) => setCurrentPage(page),
+        }}
+        style={{ width: "100%" }}
+      />
     </div>
   );
 };

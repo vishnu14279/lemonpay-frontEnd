@@ -1,36 +1,68 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input, Button, DatePicker, Form, message } from "antd";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import dayjs from "dayjs";
 import "./AddTask.css";
-// import dayjs from "dayjs";
 
-const AddTask = () => {
+const UpdateTask = () => {
     const [taskName, setTaskName] = useState("");
     const [description, setDescription] = useState("");
-    const [date, setDate] = useState(null)
+    const [date, setDate] = useState(dayjs());
+
     const navigate = useNavigate();
+    const { id } = useParams();
+
+    useEffect(() => {
+        if (id) {
+            const fetchTask = async () => {
+                try {
+                    const token = localStorage.getItem("token");
+                    const response = await axios.get(`http://localhost:3000/api/tasks/getTask/${id}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+
+                    const { taskName, description, dueDate } = response.data;
+                    setTaskName(taskName);
+                    setDescription(description);
+                    setDate(dayjs(dueDate));
+                } catch (err) {
+                    message.error(err, "Failed to load task data");
+                }
+            };
+
+            fetchTask();
+        }
+    }, [id]);
 
     const handleSubmit = async () => {
+        const token = localStorage.getItem("token");
         try {
-            const response = await axios.post("http://localhost:3000/api/tasks/create", {
-                taskName: taskName,
+
+            await axios.put(`http://localhost:3000/api/tasks/updateTask/${id}`, {
+                taskName,
                 description,
                 dueDate: date,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
 
-            if (response.status === 201) {
-                message.success("Task created successfully!");
-                navigate("/tasks");
-            }
+            message.success("Task updated successfully!");
+
+
+            navigate("/tasks");
         } catch (error) {
-            message.error(error.response?.data?.error || "Failed to create task.");
+            message.error(error.response?.data?.error || "Something went wrong");
         }
     };
 
     return (
         <div className="add-task-container">
-            <h2 className="title">Add Task</h2>
+            <h2 className="title">{id ? "Edit Task" : "Add Task"}</h2>
             <Form layout="vertical" onFinish={handleSubmit} className="task-form">
                 <Form.Item>
                     <Input
@@ -58,10 +90,12 @@ const AddTask = () => {
                         className="task-input"
                     />
                 </Form.Item>
+
                 <div className="button-group">
                     <Button type="primary" htmlType="submit" className="save-button">
-                        Save
+                        {id ? "Update" : "Save"}
                     </Button>
+
                     <Button type="primary" htmlType="submit" className="cancel-button" onClick={() => navigate("/tasks")}>
                         Cancel
                     </Button>
@@ -71,4 +105,4 @@ const AddTask = () => {
     );
 };
 
-export default AddTask;
+export default UpdateTask;

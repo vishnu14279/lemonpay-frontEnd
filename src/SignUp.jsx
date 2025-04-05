@@ -144,8 +144,7 @@ const SignUp = () => {
           </div>
         )}
 
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "15px", color: "#fff" }}>
-          <Checkbox style={{ color: "white" }}>Remember me</Checkbox>
+        <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "15px", color: "#fff" }}>
           <a href="#" style={{ color: "#ffcb00", textDecoration: "none" }} onClick={handleSignIn}>Sign In</a>
         </div>
 

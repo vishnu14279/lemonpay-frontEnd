@@ -187,3 +187,23 @@
     display: none;
   }
 }
+.cancel-button {
+  all: unset;
+  color: black;
+  cursor: pointer;
+  border:none;
+}
+
+.cancel-button:hover,
+.cancel-button:focus,
+.cancel-button:active  {
+  background: none !important;
+  color: black !important;
+  border: none !important;
+  outline: none !important;
+}
+.button-group{
+  display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
