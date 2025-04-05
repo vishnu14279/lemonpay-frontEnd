@@ -10,8 +10,10 @@ const AddTask = () => {
     const [description, setDescription] = useState("");
     const [date, setDate] = useState(null)
     const navigate = useNavigate();
+    const [errors, setErrors] = useState([]);
 
     const handleSubmit = async () => {
+        setErrors([]); // reset
         try {
             const response = await axios.post("http://localhost:3000/api/tasks/create", {
                 taskName: taskName,
@@ -24,7 +26,11 @@ const AddTask = () => {
                 navigate("/tasks");
             }
         } catch (error) {
-            message.error(error.response?.data?.error || "Failed to create task.");
+            if (error.response && error.response.status === 400) {
+                setErrors(error.response.data.errors); // set validation errors
+            } else {
+                console.error("Something went wrong", error);
+            }
         }
     };
 
@@ -66,6 +72,15 @@ const AddTask = () => {
                         Cancel
                     </Button>
                 </div>
+                {errors.length > 0 && (
+                    <div className="error-container">
+                        {errors.map((err, index) => (
+                            <p key={index} style={{ color: "red" }}>
+                                {err.msg}
+                            </p>
+                        ))}
+                    </div>
+                )}
             </Form>
         </div>
     );

@@ -9,6 +9,7 @@ const UpdateTask = () => {
     const [taskName, setTaskName] = useState("");
     const [description, setDescription] = useState("");
     const [date, setDate] = useState(dayjs());
+    const [errors, setErrors] = useState([]);
 
     const navigate = useNavigate();
     const { id } = useParams();
@@ -39,6 +40,8 @@ const UpdateTask = () => {
 
     const handleSubmit = async () => {
         const token = localStorage.getItem("token");
+        setErrors([]); // reset
+
         try {
 
             await axios.put(`http://localhost:3000/api/tasks/updateTask/${id}`, {
@@ -56,7 +59,11 @@ const UpdateTask = () => {
 
             navigate("/tasks");
         } catch (error) {
-            message.error(error.response?.data?.error || "Something went wrong");
+            if (error.response && error.response.status === 400) {
+                setErrors(error.response.data.errors); // set validation errors
+            } else {
+                console.error("Something went wrong", error);
+            }
         }
     };
 
@@ -100,6 +107,15 @@ const UpdateTask = () => {
                         Cancel
                     </Button>
                 </div>
+                {errors.length > 0 && (
+                    <div className="error-container">
+                        {errors.map((err, index) => (
+                            <p key={index} style={{ color: "red" }}>
+                                {err.msg}
+                            </p>
+                        ))}
+                    </div>
+                )}
             </Form>
         </div>
     );
